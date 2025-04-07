@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON to CSV Converter</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">JSON to CSV Converter</h1>
+        <p class="description">Upload um arquivo JSON, veja o nome carregado e escolha o nome do arquivo CSV baixado.</p>
+        
+        <!-- Botão para selecionar o arquivo -->
+        <label for="jsonFile" class="file-label">Escolher arquivo</label>
+        <input type="file" id="jsonFile" accept=".json" class="file-input" onchange="updateFileName()">
+        
+        <!-- Campo para exibir o nome do arquivo e editar o nome de download -->
+        <div class="file-info">
+            <p id="fileName">Nenhum arquivo carregado</p>
+            <input type="text" id="outputFileName" placeholder="Digite o nome do arquivo CSV" class="output-name">
+        </div>
+        
+        <!-- Botão para converter -->
+        <button onclick="convertToCSV()" class="convert-button">Converter e Baixar CSV</button>
+    </div>
+
+    <script>
+        function updateFileName() {
+            const fileInput = document.getElementById('jsonFile');
+            const fileNameDisplay = document.getElementById('fileName');
+            const file = fileInput.files[0];
+            
+            if (file) {
+                fileNameDisplay.textContent = `Arquivo carregado: ${file.name}`;
+            } else {
+                fileNameDisplay.textContent = "Nenhum arquivo carregado";
+            }
+        }
+
+        function convertToCSV() {
+            const fileInput = document.getElementById('jsonFile');
+            const file = fileInput.files[0];
+            const outputFileNameInput = document.getElementById('outputFileName').value || 'converted_data';
+            
+            if (!file) {
+                alert('Por favor, faça o upload de um arquivo JSON.');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                try {
+                    const jsonData = JSON.parse(event.target.result);
+
+                    // Convert JSON to CSV
+                    const keys = Object.keys(jsonData[0]);
+                    const csv = [
+                        keys.join(','), // Header row
+                        ...jsonData.map(obj => keys.map(key => obj[key]).join(',')) // Data rows
+                    ].join('\n');
+
+                    // Create a downloadable link
+                    const blob = new Blob([csv], { type: 'text/csv' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `${outputFileNameInput}.csv`;
+                    a.click();
+                    URL.revokeObjectURL(url);
+                } catch (error) {
+                    alert('Arquivo JSON inválido. Por favor, envie um arquivo JSON formatado corretamente.');
+                }
+            };
+            reader.readAsText(file);
+        }
+    </script>
+</body>
+</html>
