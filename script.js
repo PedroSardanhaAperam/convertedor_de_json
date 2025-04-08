@@ -31,7 +31,7 @@ function convertFile() {
                 const keys = Object.keys(jsonData[0]);
                 const csv = [
                     keys.join(','), // Header row
-                    ...jsonData.map(obj => keys.map(key => obj[key]).join(',')) // Data rows
+                    ...jsonData.map(obj => keys.map(key => obj[key]).join(',')) // Data rows 
                 ].join('\n');
 
                 // Criar link de download
