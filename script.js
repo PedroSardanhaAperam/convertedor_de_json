@@ -27,11 +27,13 @@ function convertFile() {
             const jsonData = JSON.parse(event.target.result);
 
             if (fileType === 'csv') {
-                // Converter para CSV
+                // Converter JSON para CSV
                 const keys = Object.keys(jsonData[0]);
                 const csv = [
-                    keys.join(','), // Header row
-                    ...jsonData.map(obj => keys.map(key => obj[key]).join(',')) // Data rows 
+                    keys.join(','), // Linha de cabeçalhos
+                    ...jsonData.map(obj =>
+                        keys.map(key => formatCSVValue(obj[key])).join(',')
+                    ) // Linhas de dados formatadas corretamente
                 ].join('\n');
 
                 // Criar link de download
@@ -56,4 +58,17 @@ function convertFile() {
         }
     };
     reader.readAsText(file);
+}
+
+// Função para tratar valores no CSV
+function formatCSVValue(value) {
+    if (value === null || value === undefined) {
+        return '';
+    }
+    const stringValue = value.toString();
+    // Adiciona aspas apenas se necessário (ex.: contém vírgulas, aspas ou quebras de linha)
+    if (stringValue.includes(',') || stringValue.includes('"') || stringValue.includes('\n')) {
+        return `"${stringValue.replace(/"/g, '""')}"`; // Escapa aspas duplas corretamente
+    }
+    return stringValue;
 }
