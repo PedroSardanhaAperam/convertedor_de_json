@@ -13,9 +13,8 @@ function updateFileName() {
 function convertFile() {
     const fileInput = document.getElementById('jsonFile');
     const file = fileInput.files[0];
-    const outputFileNameInput = document.getElementById('outputFileName').value || 'converted_file';
-    const fileType = document.getElementById('fileType').value;
-
+    const outputFileNameInput = document.getElementById('outputFileName').value.trim();
+    
     if (!file) {
         alert('Por favor, faça o upload de um arquivo JSON.');
         return;
@@ -25,8 +24,9 @@ function convertFile() {
     reader.onload = function (event) {
         try {
             const jsonData = JSON.parse(event.target.result);
+            const outputFileName = outputFileNameInput || file.name.replace(/\.json$/i, ''); // Usa o nome original do arquivo JSON
 
-            if (fileType === 'csv') {
+            if (document.getElementById('fileType').value === 'csv') {
                 // Converter JSON para CSV
                 const keys = Object.keys(jsonData[0]);
                 const csv = [
@@ -41,17 +41,17 @@ function convertFile() {
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = `${outputFileNameInput}.csv`;
+                a.download = `${outputFileName}.csv`; // Nome do arquivo final
                 a.click();
                 URL.revokeObjectURL(url);
-            } else if (fileType === 'xlsx') {
-                // Converter para XLSX
+            } else {
+                // Converter JSON para XLSX
                 const worksheet = XLSX.utils.json_to_sheet(jsonData);
                 const workbook = XLSX.utils.book_new();
                 XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
 
                 // Criar arquivo XLSX
-                XLSX.writeFile(workbook, `${outputFileNameInput}.xlsx`);
+                XLSX.writeFile(workbook, `${outputFileName}.xlsx`); // Nome do arquivo final
             }
         } catch (error) {
             alert('Arquivo JSON inválido. Por favor, envie um arquivo JSON formatado corretamente.');
@@ -60,7 +60,6 @@ function convertFile() {
     reader.readAsText(file);
 }
 
-// Função para tratar valores no CSV
 function formatCSVValue(value) {
     if (value === null || value === undefined) {
         return '';
