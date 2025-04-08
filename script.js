@@ -9,7 +9,7 @@ function updateFileName() {
         fileNameDisplay.textContent = "Nenhum arquivo carregado";
     }
 }
-
+ 
 function convertFile() {
     const fileInput = document.getElementById('jsonFile');
     const file = fileInput.files[0];
