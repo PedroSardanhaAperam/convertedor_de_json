@@ -17,7 +17,7 @@ body {
     padding: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
- 
+
 .title {
     font-size: 2rem;
     margin-bottom: 10px;
@@ -36,12 +36,14 @@ body {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
     margin-bottom: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .file-label:hover {
     background-color: #e68a00;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .file-input {
@@ -67,6 +69,33 @@ body {
     margin-bottom: 15px;
 }
 
+.format-selection {
+    margin: 15px 0;
+}
+
+.format-label {
+    font-size: 1rem;
+    color: #ffffff;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.format-dropdown {
+    padding: 8px;
+    border-radius: 5px;
+    border: none;
+    width: 80%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    font-size: 1rem;
+    cursor: pointer;
+    margin-bottom: 15px;
+}
+
+.format-dropdown:focus {
+    outline: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
 .convert-button {
     padding: 10px 20px;
     background-color: #4CAF50;
@@ -75,9 +104,11 @@ body {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .convert-button:hover {
     background-color: #45a049;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
